@@ -1,0 +1,54 @@
+*idraaak-anchors.txt*  Local HTML article fragment checks for Vim
+
+Idraaak Article Anchors                                     *idraaak-anchors*
+
+Requires Vim 8.2+ with +job, +channel, +timers and UTF-8 encoding, plus a
+local Python 3.8+ executable. No embedded +python3 support is required.
+Neovim is not supported in this version.
+
+COMMANDS                                            *:IdraaakAnchorsCheck*
+
+  :IdraaakAnchorsCheck
+      Check the current buffer snapshot. No changes or network requests.
+      Use :copen and Enter, or :cnext/:cprevious, to navigate results.
+      Editing the buffer clears old results. Late results are discarded.
+
+                                                    *:IdraaakAnchorsClear*
+  :IdraaakAnchorsClear
+      Cancel the current buffer's pending check and clear its owned results.
+      Unrelated quickfix lists are preserved.
+
+CONFIGURATION                                  *idraaak-anchors-python*
+
+If the automatic executable search fails, configure a list in your vimrc:
+>
+  let g:idraaak_anchors_python = ['py', '-3']
+  let g:idraaak_anchors_python = ['C:/path/to/python.exe']
+<
+Unix defaults: python3, python. Native Windows: py -3, python3, python.
+The executable runs directly, not through a shell. Standard library only.
+Keep the plugin/, autoload/, python/ and doc/ directories together.
+
+SCOPE AND LIMITS
+
+Missing #fragment targets, duplicate IDs and ambiguous local links in
+static HTML/Gutenberg source. Arabic, Unicode, HTML entities and one
+UTF-8 percent-decoding pass are supported. IDs remain case-sensitive.
+Legacy anchor names are accepted. Vim columns count UTF-8 bytes.
+
+Comments, raw-text element contents and inert template contents are ignored.
+Empty/text-only fragments and document-top fallback are skipped. A nonempty
+base href produces a warning and skips destination checks; duplicates are
+still checked. Gutenberg JSON anchor values do not count as rendered IDs.
+
+The checker is not a browser/HTML5 tree builder. Malformed markup, dynamic
+JavaScript IDs, external links, other-page.html#fragment, live WordPress
+rendering and block-comment pairing are outside its scope.
+
+Manual command only; no key bindings or automatic checks. Results are
+limited to 500 issues and input to 2 MiB of UTF-8 text. Timeout: 20 seconds.
+
+MIT license. Copyright 2026 Nedal Shabaan.
+Developer: https://idraaak.com/
+
+vim:tw=78:ts=8:ft=help:norl:
